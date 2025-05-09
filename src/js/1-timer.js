@@ -16,7 +16,6 @@ const refs = {
 let selectedTime = null;
 let timerId = null;
 
-// 🔧 Flatpickr налаштування
 flatpickr(refs.dateInput, {
   enableTime: true,
   time_24hr: true,
@@ -39,7 +38,6 @@ flatpickr(refs.dateInput, {
   },
 });
 
-// ▶️ Обробник кнопки "Start"
 refs.startBtn.addEventListener('click', () => {
   if (!selectedTime) return;
 
@@ -65,7 +63,6 @@ refs.startBtn.addEventListener('click', () => {
   }, 1000);
 });
 
-// 🔄 Оновлення таймера
 function updateClock(ms) {
   const { days, hours, minutes, seconds } = convertMs(ms);
   refs.days.textContent = addLeadingZero(days);
@@ -74,7 +71,6 @@ function updateClock(ms) {
   refs.seconds.textContent = addLeadingZero(seconds);
 }
 
-// 🧮 Допоміжні функції
 function convertMs(ms) {
   const sec = 1000;
   const min = sec * 60;

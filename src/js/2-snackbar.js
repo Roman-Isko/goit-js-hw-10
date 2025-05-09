@@ -1,41 +1,37 @@
-// const form = document.querySelector('.feedback-form');
-// const STORAGE_KEY = 'feedback-form-state';
+import iziToast from 'izitoast';
+import 'izitoast/dist/css/iziToast.min.css';
 
-// let formData = {
-//   email: '',
-//   message: '',
-// };
+const form = document.querySelector('.form');
 
-// const savedData = localStorage.getItem(STORAGE_KEY);
-// if (savedData) {
-//   try {
-//     formData = JSON.parse(savedData);
-//     form.elements.email.value = formData.email || '';
-//     form.elements.message.value = formData.message || '';
-//   } catch (error) {
-//     console.error('Parsing error:', error);
-//   }
-// }
+form.addEventListener('submit', event => {
+  event.preventDefault();
 
-// form.addEventListener('input', event => {
-//   const { name, value } = event.target;
-//   formData[name] = value.trim();
-//   localStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
-// });
+  const delay = Number(form.elements.delay.value);
+  const state = form.elements.state.value;
 
-// form.addEventListener('submit', event => {
-//   event.preventDefault();
+  createPromise(delay, state)
+    .then(delay => {
+      iziToast.success({
+        title: '✅ Success',
+        message: `Fulfilled promise in ${delay}ms`,
+        position: 'topRight',
+      });
+    })
+    .catch(delay => {
+      iziToast.error({
+        title: '❌ Error',
+        message: `Rejected promise in ${delay}ms`,
+        position: 'topRight',
+      });
+    });
 
-//   const { email, message } = formData;
+  form.reset();
+});
 
-//   if (email === '' || message === '') {
-//     alert('Fill please all fields');
-//     return;
-//   }
-
-//   console.log(formData);
-
-//   formData = { email: '', message: '' };
-//   localStorage.removeItem(STORAGE_KEY);
-//   form.reset();
-// });
+function createPromise(delay, state) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      state === 'fulfilled' ? resolve(delay) : reject(delay);
+    }, delay);
+  });
+}
